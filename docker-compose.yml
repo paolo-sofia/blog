@@ -1,0 +1,30 @@
+## MAKE SURE YOU RUN THE SITE BUILD COMMAND FIRST, BEFORE DEPLOYING THIS CONTAINER ##
+## YOU NEED TO MOUNT THE SITE DURING THE HUGO DEPLOYMENT ##
+services:
+  hugo:
+    image: ghcr.io/gohugoio/hugo:latest
+    container_name: hugo
+    command: server --bind 0.0.0.0 -b https://blog.paolosofia.ovh/ --appendPort=false --disableFastRender
+    ports:
+      - "1313:1313" 
+    volumes:
+      - "/home/ubuntu/git/blog/blog:/project" #mount your site here after you've created a new site!
+    networks:
+      - server
+    environment:
+      - HUGO_BASE_URL=https://blog.paolosofia.ovh/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hugo-http.entrypoints=web"
+      - "traefik.http.routers.hugo-http.rule=Host(`blog.paolosofia.ovh`)"
+      - "traefik.http.routers.hugo-https.entrypoints=websecure"
+      - "traefik.http.routers.hugo-https.rule=Host(`blog.paolosofia.ovh`)"
+      - "traefik.http.routers.hugo-https.tls=true"
+      - "traefik.http.routers.hugo-https.tls.certresolver=cloudflare"
+      - "traefik.http.services.hugo-http.loadbalancer.server.port=1313"
+      - "traefik.docker.network=server"      
+
+networks:
+  server:
+    name: server
+    external: true

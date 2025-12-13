@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on PaperMod</title>
+    <link>https://blog.paolosofia.ovh/posts/</link>
+    <description>Recent content in Posts on PaperMod</description>
+    <image>
+      <title>PaperMod</title>
+      <url>https://blog.paolosofia.ovh/images/papermod-cover.png</url>
+      <link>https://blog.paolosofia.ovh/images/papermod-cover.png</link>
+    </image>
+    <generator>Hugo -- 0.152.2</generator>
+    <language>en</language>
+    <copyright>PaperMod Contributors</copyright>
+    <lastBuildDate>Sat, 13 Dec 2025 22:08:03 +0000</lastBuildDate>
+    <atom:link href="https://blog.paolosofia.ovh/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>New_post</title>
+      <link>https://blog.paolosofia.ovh/posts/new_post/</link>
+      <pubDate>Sat, 13 Dec 2025 22:08:03 +0000</pubDate>
+      <guid>https://blog.paolosofia.ovh/posts/new_post/</guid>
+      <description>&lt;h2 id=&#34;new-post&#34;&gt;New post&lt;/h2&gt;</description>
+    </item>
+    <item>
+      <title>Test Archetype3</title>
+      <link>https://blog.paolosofia.ovh/posts/test-archetype3/</link>
+      <pubDate>Sat, 13 Dec 2025 22:05:39 +0000</pubDate>
+      <guid>https://blog.paolosofia.ovh/posts/test-archetype3/</guid>
+      <description>&lt;p&gt;Test test test safòsfhsdifsdnj&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Test Archetype2</title>
+      <link>https://blog.paolosofia.ovh/posts/test-archetype2/</link>
+      <pubDate>Sat, 13 Dec 2025 22:01:26 +0000</pubDate>
+      <guid>https://blog.paolosofia.ovh/posts/test-archetype2/</guid>
+      <description>A short description</description>
+    </item>
+    <item>
+      <title>Test Archetype</title>
+      <link>https://blog.paolosofia.ovh/posts/test-archetype/</link>
+      <pubDate>Sat, 13 Dec 2025 21:58:28 +0000</pubDate>
+      <guid>https://blog.paolosofia.ovh/posts/test-archetype/</guid>
+      <description>&lt;p&gt;test&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>My 1st post</title>
+      <link>https://blog.paolosofia.ovh/posts/test/</link>
+      <pubDate>Tue, 15 Sep 2020 11:30:03 +0000</pubDate>
+      <guid>https://blog.paolosofia.ovh/posts/test/</guid>
+      <description>Desc Text.</description>
+    </item>
+  </channel>
+</rss>
