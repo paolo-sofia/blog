@@ -10,7 +10,7 @@ hidemeta: false
 comments: false
 description: ""
 canonicalURL: ""
-disableShare: false
+disableShare: true
 disableHLJS: false
 hideSummary: false
 searchHidden: true

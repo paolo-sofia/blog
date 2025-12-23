@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Tags on PaperMod</title>
+    <title>Tags on Paolo Sofia&#39;s Blog</title>
     <link>https://blog.paolosofia.ovh/tags/</link>
-    <description>Recent content in Tags on PaperMod</description>
+    <description>Recent content in Tags on Paolo Sofia&#39;s Blog</description>
     <image>
-      <title>PaperMod</title>
+      <title>Paolo Sofia&#39;s Blog</title>
       <url>https://blog.paolosofia.ovh/images/papermod-cover.png</url>
       <link>https://blog.paolosofia.ovh/images/papermod-cover.png</link>
     </image>
-    <generator>Hugo -- 0.152.2</generator>
+    <generator>Hugo -- 0.153.2</generator>
     <language>en</language>
-    <copyright>PaperMod Contributors</copyright>
-    <lastBuildDate>Tue, 15 Sep 2020 11:30:03 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 21 Dec 2025 14:42:09 +0000</lastBuildDate>
     <atom:link href="https://blog.paolosofia.ovh/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>First</title>
-      <link>https://blog.paolosofia.ovh/tags/first/</link>
-      <pubDate>Tue, 15 Sep 2020 11:30:03 +0000</pubDate>
-      <guid>https://blog.paolosofia.ovh/tags/first/</guid>
+      <title>Docker</title>
+      <link>https://blog.paolosofia.ovh/tags/docker/</link>
+      <pubDate>Sun, 21 Dec 2025 14:42:09 +0000</pubDate>
+      <guid>https://blog.paolosofia.ovh/tags/docker/</guid>
       <description></description>
     </item>
   </channel>

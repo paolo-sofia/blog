@@ -1,53 +1,32 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>PaperMod</title>
+    <title>Paolo Sofia&#39;s Blog</title>
     <link>https://blog.paolosofia.ovh/</link>
-    <description>Recent content on PaperMod</description>
+    <description>Recent content on Paolo Sofia&#39;s Blog</description>
     <image>
-      <title>PaperMod</title>
+      <title>Paolo Sofia&#39;s Blog</title>
       <url>https://blog.paolosofia.ovh/images/papermod-cover.png</url>
       <link>https://blog.paolosofia.ovh/images/papermod-cover.png</link>
     </image>
-    <generator>Hugo -- 0.152.2</generator>
+    <generator>Hugo -- 0.153.2</generator>
     <language>en</language>
-    <copyright>PaperMod Contributors</copyright>
-    <lastBuildDate>Sat, 13 Dec 2025 22:08:03 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 21 Dec 2025 14:42:09 +0000</lastBuildDate>
     <atom:link href="https://blog.paolosofia.ovh/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>New_post</title>
-      <link>https://blog.paolosofia.ovh/posts/new_post/</link>
-      <pubDate>Sat, 13 Dec 2025 22:08:03 +0000</pubDate>
-      <guid>https://blog.paolosofia.ovh/posts/new_post/</guid>
-      <description>&lt;h2 id=&#34;new-post&#34;&gt;New post&lt;/h2&gt;</description>
+      <title>Deploy HUGO static website using docker</title>
+      <link>https://blog.paolosofia.ovh/posts/deploy_hugo_docker/</link>
+      <pubDate>Sun, 21 Dec 2025 14:42:09 +0000</pubDate>
+      <guid>https://blog.paolosofia.ovh/posts/deploy_hugo_docker/</guid>
+      <description>&lt;p&gt;Many tutorials on the web focus on deploying hugo static websites on bare metal or using vps. In my case, I wanted to deploy this blog as a docker container using docker compose, as I do with all the docker services I deploy in my home server.
+I faced some small problems while figuring out how to make it work, so I decided to document it here, so that in case someone is in the same situation as mine, can hopefully find this useful.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Test Archetype3</title>
-      <link>https://blog.paolosofia.ovh/posts/test-archetype3/</link>
-      <pubDate>Sat, 13 Dec 2025 22:05:39 +0000</pubDate>
-      <guid>https://blog.paolosofia.ovh/posts/test-archetype3/</guid>
-      <description>&lt;p&gt;Test test test safòsfhsdifsdnj&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Test Archetype2</title>
-      <link>https://blog.paolosofia.ovh/posts/test-archetype2/</link>
-      <pubDate>Sat, 13 Dec 2025 22:01:26 +0000</pubDate>
-      <guid>https://blog.paolosofia.ovh/posts/test-archetype2/</guid>
-      <description>A short description</description>
-    </item>
-    <item>
-      <title>Test Archetype</title>
-      <link>https://blog.paolosofia.ovh/posts/test-archetype/</link>
-      <pubDate>Sat, 13 Dec 2025 21:58:28 +0000</pubDate>
-      <guid>https://blog.paolosofia.ovh/posts/test-archetype/</guid>
-      <description>&lt;p&gt;test&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>My 1st post</title>
-      <link>https://blog.paolosofia.ovh/posts/test/</link>
-      <pubDate>Tue, 15 Sep 2020 11:30:03 +0000</pubDate>
-      <guid>https://blog.paolosofia.ovh/posts/test/</guid>
-      <description>Desc Text.</description>
+      <title>About</title>
+      <link>https://blog.paolosofia.ovh/about/</link>
+      <pubDate>Sun, 21 Dec 2025 13:39:48 +0000</pubDate>
+      <guid>https://blog.paolosofia.ovh/about/</guid>
+      <description>&lt;p&gt;Test about&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

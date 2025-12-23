@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Deploy HUGO static website using docker | Paolo Sofia&#39;s Blog</title>
+<meta name="keywords" content="docker">
+<meta name="description" content="Many tutorials on the web focus on deploying hugo static websites on bare metal or using vps. In my case, I wanted to deploy this blog as a docker container using docker compose, as I do with all the docker services I deploy in my home server.
+I faced some small problems while figuring out how to make it work, so I decided to document it here, so that in case someone is in the same situation as mine, can hopefully find this useful.">
+<meta name="author" content="Paolo Sofia">
+<link rel="canonical" href="https://blog.paolosofia.ovh/posts/deploy_hugo_docker/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.343cc480b9ffc8f04ccbe5e968ad674880cab773ec19905e93033065c1e7a804.css" integrity="sha256-NDzEgLn/yPBMy&#43;XpaK1nSIDKt3PsGZBekwMwZcHnqAQ=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.paolosofia.ovh/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.paolosofia.ovh/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.paolosofia.ovh/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.paolosofia.ovh/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.paolosofia.ovh/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://blog.paolosofia.ovh/posts/deploy_hugo_docker/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.paolosofia.ovh/" accesskey="h" title="Paolo Sofia&#39;s Blog (Alt + H)">Paolo Sofia&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.paolosofia.ovh/posts" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.paolosofia.ovh/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.paolosofia.ovh/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.paolosofia.ovh/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.paolosofia.ovh/">Home</a>&nbsp;»&nbsp;<a href="https://blog.paolosofia.ovh/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Deploy HUGO static website using docker
+    </h1>
+    <div class="post-meta"><span title='2025-12-21 14:42:09 +0000 UTC'>December 21, 2025</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>671 words</span>&nbsp;·&nbsp;<span>Paolo Sofia</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#step-1-create-the-docker-compose">Step 1. Create the docker compose</a></li>
+        <li><a href="#2-edit-the-command-to-execute">2. Edit the command to execute</a></li>
+        <li><a href="#3-create-the-website-before-deploying">3 Create the website before deploying</a></li>
+        <li><a href="#4-create-new-content">4 Create new content</a></li>
+        <li><a href="#5-add-cleandestinationdir-to-remove-deleted-content">5 Add cleanDestinationDir to remove deleted content</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Many tutorials on the web focus on deploying hugo static websites on bare metal or using vps. In my case, I wanted to deploy this blog as a docker container using docker compose, as I do with all the docker services I deploy in my home server.
+I faced some small problems while figuring out how to make it work, so I decided to document it here, so that in case someone is in the same situation as mine, can hopefully find this useful.</p>
+<h3 id="step-1-create-the-docker-compose">Step 1. Create the docker compose<a hidden class="anchor" aria-hidden="true" href="#step-1-create-the-docker-compose">#</a></h3>
+<p>This is the easiest step, which is generating the docker compose file. Below is the <code>docker-compose.yml</code> file I am currently using, and in the next sections I will show you the tricky parts, which is the command section. For now, as you can see, there not a lot of settings to configure, I only had to add the traefik labels to expose the website to the internet, and mount the volume.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="cl"><span class="nt">services</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hugo</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">ghcr.io/gohugoio/hugo:latest</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l">hugo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">server --bind 0.0.0.0 -b https://blog.paolosofia.ovh/ --appendPort=false --disableFastRender --cleanDestinationDir</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;1313:1313&#34;</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;/path/to/webiste/name_of_the_website:/project&#34;</span><span class="w"> </span><span class="c"># mount your site here after you&#39;ve created a new site!</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">server</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;traefik.enable=true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;traefik.http.routers.hugo-http.entrypoints=web&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;traefik.http.routers.hugo-http.rule=Host(`blog.paolosofia.ovh`)&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;traefik.http.routers.hugo-https.entrypoints=websecure&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;traefik.http.routers.hugo-https.rule=Host(`blog.paolosofia.ovh`)&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;traefik.http.routers.hugo-https.tls=true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;traefik.http.routers.hugo-https.tls.certresolver=cloudflare&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;traefik.http.services.hugo-http.loadbalancer.server.port=1313&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;traefik.docker.network=server&#34;</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">networks</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">server</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">server</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">external</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></div><h3 id="2-edit-the-command-to-execute">2. Edit the command to execute<a hidden class="anchor" aria-hidden="true" href="#2-edit-the-command-to-execute">#</a></h3>
+<p>I encountered 3 problems when first deploying this docker compose, they are easy to fix but it took a bit to figure it out.</p>
+<h4 id="21-edit-bind-address">2.1 Edit bind address<a hidden class="anchor" aria-hidden="true" href="#21-edit-bind-address">#</a></h4>
+<p>The first problem was with the bind address, since the docker-compose.yml I found on the internet was using 127.0.0.1 as bind address.<br>
+In order to make hugo work in docker, you must pass the address 0.0.0.0, otherwise you will receive a 502 error.</p>
+<h4 id="22-set-the-base-url">2.2 Set the base URL<a hidden class="anchor" aria-hidden="true" href="#22-set-the-base-url">#</a></h4>
+<p>If you read hugo&rsquo;s documentation, you most probably have set the baseURL in the hugo.toml or hugo.yml file. That is not sufficient for deploying the static website using docker. You need to pass the baseURL in the command section. If you don&rsquo;t do so, the base url will be set as localhost.</p>
+<p>When I deployed the first time after fixing the bind address, I was able to see the main page at the baseurl, but every link was pointing to localhost.</p>
+<h4 id="23-set-appendport-to-false">2.3 Set appendPort to false<a hidden class="anchor" aria-hidden="true" href="#23-set-appendport-to-false">#</a></h4>
+<p>By default, the <em>appendPort</em> parameter is set to true, causing every link to explicitly include the port. In my case every link was pointing to <a href="https://blog.paolosofia.ovh:1313">https://blog.paolosofia.ovh:1313</a>, which caused the browser to fail reaching the page, resulting in a timeout error.</p>
+<h3 id="3-create-the-website-before-deploying">3 Create the website before deploying<a hidden class="anchor" aria-hidden="true" href="#3-create-the-website-before-deploying">#</a></h3>
+<p>Before deploying this compose file, you must create the hugo website as you would when not using docker. To do so, you can run this command:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker run --rm -v /path/to/webiste:/project ghcr.io/gohugoio/hugo:latest new site name_of_the_website --format yaml
+</span></span></code></pre></div><p>After running the command, if successful, you will see a new folder with the website content, and that means that the website folder has been created. You can now deploy the compose file using <code>docker compose up -d</code></p>
+<h3 id="4-create-new-content">4 Create new content<a hidden class="anchor" aria-hidden="true" href="#4-create-new-content">#</a></h3>
+<p>When creating new content, you can either manually create a md file in the <em>content</em> folder, or run the hugo <strong>new content</strong> command that created the file for you, applying the <a href="https://gohugo.io/content-management/archetypes/">archetype</a>. Run this command if you want to use this latter solution:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker run --rm -v /path/to/webiste/name_of_the_website:/project ghcr.io/gohugoio/hugo:latest new content posts/post_name.md
+</span></span></code></pre></div><h3 id="5-add-cleandestinationdir-to-remove-deleted-content">5 Add cleanDestinationDir to remove deleted content<a hidden class="anchor" aria-hidden="true" href="#5-add-cleandestinationdir-to-remove-deleted-content">#</a></h3>
+<p>If you don&rsquo;t add this flag, then the <em>public</em> folder containing all the html code will never be cleaned, meaning that even if you remove a post from the <em>content</em> folder, it will still be deployed and still be visible on the website.</p>
+<p>I noticed that after adding this flag, the live reloading feature started to work, which for whatever reason to me unknown, it was not working before. I don&rsquo;t know if this flag is direcly linked to the live reloading feature, so check it out if you see that the live reloading feature is not working.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.paolosofia.ovh/tags/docker/">Docker</a></li>
+    </ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://blog.paolosofia.ovh/">Paolo Sofia&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -4,9 +4,9 @@ services:
   hugo:
     image: ghcr.io/gohugoio/hugo:latest
     container_name: hugo
-    command: server --bind 0.0.0.0 -b https://blog.paolosofia.ovh/ --appendPort=false --disableFastRender
+    command: server --bind 0.0.0.0 -b https://blog.paolosofia.ovh/ --appendPort=false --disableFastRender --cleanDestinationDir
     ports:
-      - "1313:1313" 
+      - "1313:1313"
     volumes:
       - "/home/ubuntu/git/blog/blog:/project" #mount your site here after you've created a new site!
     networks:
@@ -22,7 +22,7 @@ services:
       - "traefik.http.routers.hugo-https.tls=true"
       - "traefik.http.routers.hugo-https.tls.certresolver=cloudflare"
       - "traefik.http.services.hugo-http.loadbalancer.server.port=1313"
-      - "traefik.docker.network=server"      
+      - "traefik.docker.network=server"
 
 networks:
   server:
